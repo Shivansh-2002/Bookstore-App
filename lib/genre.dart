@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../util.dart';
 
-
+// This class is used to call all the books from same genre
 class BookDetailPage extends StatefulWidget {
   // Define any necessary parameters to pass data to the book detail page
   final String bookId;
@@ -12,6 +12,7 @@ class BookDetailPage extends StatefulWidget {
   _BookDetailPageState createState() => _BookDetailPageState();
 }
 
+//Simple enough code for calling a new page containing books from same genre
 class _BookDetailPageState extends State<BookDetailPage> {
   @override
   Widget build(BuildContext context) {

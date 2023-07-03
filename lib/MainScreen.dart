@@ -4,6 +4,8 @@ import 'package:http/http.dart' as http;
 import '../util.dart';
 import 'dart:convert';
 
+// the home page which gives us different books from different genres arranges in a column
+// the books from each genre are horizontally scrollable
 class BookstoreHomePage extends StatefulWidget {
   const BookstoreHomePage({super.key});
 
@@ -13,6 +15,7 @@ class BookstoreHomePage extends StatefulWidget {
 }
 
 class _BookstoreHomePageState extends State<BookstoreHomePage> {
+  //initializing empty list for different genres
   List<Book> books = [];
   List<Book> fictionBooks = [];
   List<Book> dramaBooks = [];
@@ -23,13 +26,14 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
   @override
   void initState() {
     super.initState();
+    //intializing all the bookslist using this code
     fetchBooks("fiction");
     fetchBooks("drama");
     fetchBooks("mystery");
     fetchBooks("thriller");
     fetchBooks("crime");
   }
-
+  // A short code for fetching all the books of different genre
   Future<void> fetchBooks(String action) async {
     final response = await http.get(
       Uri.parse('https://www.googleapis.com/books/v1/volumes?q=subject:$action'),
@@ -47,6 +51,7 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
       // Handle error
     }
   }
+  // searching text
   String searchText = '';
   @override
   Widget build(BuildContext context) {
@@ -60,6 +65,7 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
         scrollDirection: Axis.vertical,
         child: Column(
           children: [
+            // search bar
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -82,6 +88,7 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
                 backgroundColor: Colors.white,
                 onPressed: () {
                     if(searchText!=''){
+                      //pushing new page as per search
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -95,7 +102,7 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
               ),
             ],
           ),
-
+            // scrollable column containing books from different genres
             SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: Column(

@@ -1,17 +1,9 @@
 import 'package:flutter/material.dart';
 import '../genre.dart';
 
-class ScreenUtil {
-  static double? screenWidth;
-  static double? screenHeight;
+// this the utilities files which contain different classes which are needed on different pages
 
-  static void init(BuildContext context) {
-    screenWidth = MediaQuery.of(context).size.width;
-    screenHeight = MediaQuery.of(context).size.height;
-  }
-}
-
-
+// Book class will contain the important information about a book
 class Book {
   final String id;
   final String title;
@@ -23,7 +15,9 @@ class Book {
         required this.title,
         required this.author,
         required this.imageUrl});
-
+  /*The class also includes a factory method fromJson that takes a JSON map as input and creates a Book object.
+  This factory method is responsible for extracting the relevant data from the JSON map and initializing the
+  corresponding properties of the Book object.*/
   factory Book.fromJson(Map<String, dynamic> json) {
     return Book(
       id: json['id'],
@@ -38,6 +32,9 @@ class Book {
   }
 }
 
+
+/* I have created this widget to show the different genre's names and added a
+ button which will direct us to a new page which will have books from the selected genre */
 // ignore: non_constant_identifier_names
 Widget GenreName(String genre, List<Book> genreBook, BuildContext context){
   return Row(
@@ -52,6 +49,7 @@ Widget GenreName(String genre, List<Book> genreBook, BuildContext context){
       ),
       IconButton(
         onPressed: () {
+          // Pushing the above discussed page
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -63,6 +61,9 @@ Widget GenreName(String genre, List<Book> genreBook, BuildContext context){
     ],
   );
 }
+
+// This Widget helps to make the Book Card using only this widget i am creating
+// all the cards on all the pages
 enum CardSize { small, large }
 Widget buildBookCard(Book book, CardSize cardSize) {
   double cardWidth = cardSize == CardSize.small ? 200 : 400;

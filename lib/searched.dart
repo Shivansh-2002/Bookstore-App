@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import '../util.dart';
 import 'dart:convert';
 
+// This page will give the searched result for the books from the api
 class SearchPage extends StatefulWidget {
   final String searchText;
   @override
