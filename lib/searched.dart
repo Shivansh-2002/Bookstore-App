@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import '../main.dart';
 import '../util.dart';
 import 'dart:convert';
 
@@ -10,6 +8,7 @@ class SearchPage extends StatefulWidget {
   @override
   // ignore: use_key_in_widget_constructors
   const SearchPage({required this.searchText});
+  // ignore: library_private_types_in_public_api, annotate_overrides
   _SearchPageState createState() => _SearchPageState();
 }
 
@@ -27,16 +26,13 @@ class _SearchPageState extends State<SearchPage> {
       Uri.parse('https://www.googleapis.com/books/v1/volumes?q=${widget.searchText}'),
     );
     if (response.statusCode == 200) {
-      if(response != null){
-        final jsonData = json.decode(response.body);
-        setState(() {
-          if(jsonData['items']!= null)        searchBooks = jsonData['items'].map<Book>((item) => Book.fromJson(item)).toList();
-        });
-      }
+      final jsonData = json.decode(response.body);
+      setState(() {
+        if(jsonData['items']!= null)        searchBooks = jsonData['items'].map<Book>((item) => Book.fromJson(item)).toList();
+      });
 
     } else {
       // Handle error
-      print('Failed to fetch books');
     }
   }
   @override

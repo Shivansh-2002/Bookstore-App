@@ -1,14 +1,14 @@
 import 'package:bookstore/searched.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import '../main.dart';
 import '../util.dart';
-import '../searched.dart';
 import 'dart:convert';
 
 class BookstoreHomePage extends StatefulWidget {
+  const BookstoreHomePage({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _BookstoreHomePageState createState() => _BookstoreHomePageState();
 }
 
@@ -45,19 +45,16 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
       });
     } else {
       // Handle error
-      print('Failed to fetch books');
     }
   }
   String searchText = '';
   @override
   Widget build(BuildContext context) {
-    MediaQueryData queryData;
-    queryData = MediaQuery.of(context);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: Center(child: Text('BookZone')),
+        title: const Center(child: Text('BookZone')),
       ),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
@@ -79,7 +76,7 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
                   ),
                 ),
               ),
-              SizedBox(width: 8.0),
+              const SizedBox(width: 8.0),
               FloatingActionButton(
                 elevation: 0,
                 backgroundColor: Colors.white,
@@ -94,7 +91,7 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
 
                     }
                 },
-                child: Icon(Icons.search,color:Colors.black87 , ),
+                child: const Icon(Icons.search,color:Colors.black87 , ),
               ),
             ],
           ),

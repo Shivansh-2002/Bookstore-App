@@ -1,10 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import '../main.dart';
-import '../MainScreen.dart';
 import '../genre.dart';
-import 'dart:convert';
 
 class ScreenUtil {
   static double? screenWidth;
@@ -50,7 +45,7 @@ Widget GenreName(String genre, List<Book> genreBook, BuildContext context){
     children: [
       Text(
         "  $genre Books",
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 22,
           fontWeight: FontWeight.w500,
         ),
@@ -60,10 +55,10 @@ Widget GenreName(String genre, List<Book> genreBook, BuildContext context){
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => BookDetailPage(bookId: "$genre", genreBook: genreBook,),
+              builder: (context) => BookDetailPage(bookId: genre, genreBook: genreBook,),
             ),
           );},
-        icon: Icon(Icons.arrow_forward),
+        icon: const Icon(Icons.arrow_forward),
       )
     ],
   );
@@ -75,7 +70,7 @@ Widget buildBookCard(Book book, CardSize cardSize) {
   return Container(
     width: cardWidth,
     height: cardHeight,
-    padding: EdgeInsets.all(8),
+    padding: const EdgeInsets.all(8),
     child: Card(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -86,17 +81,17 @@ Widget buildBookCard(Book book, CardSize cardSize) {
               fit: BoxFit.cover,
             ),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Text(
             book.title,
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),
-          SizedBox(height: 4),
+          const SizedBox(height: 4),
           Text(
             book.author,
-            style: TextStyle(fontSize: 14),
+            style: const TextStyle(fontSize: 14),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),

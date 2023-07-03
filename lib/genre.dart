@@ -1,18 +1,14 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import '../main.dart';
-import '../MainScreen.dart';
 import '../util.dart';
-import 'dart:convert';
 
 
 class BookDetailPage extends StatefulWidget {
   // Define any necessary parameters to pass data to the book detail page
   final String bookId;
   final List<Book> genreBook;
-  BookDetailPage({required this.bookId, required this.genreBook});
+  const BookDetailPage({super.key, required this.bookId, required this.genreBook});
   @override
+  // ignore: library_private_types_in_public_api
   _BookDetailPageState createState() => _BookDetailPageState();
 }
 
