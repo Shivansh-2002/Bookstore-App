@@ -1,8 +1,10 @@
+import 'package:bookstore/searched.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../main.dart';
 import '../util.dart';
+import '../searched.dart';
 import 'dart:convert';
 
 class BookstoreHomePage extends StatefulWidget {
@@ -30,7 +32,7 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
 
   Future<void> fetchBooks(String action) async {
     final response = await http.get(
-      Uri.parse('https://www.googleapis.com/books/v1/volumes?q=subject:$action)'),
+      Uri.parse('https://www.googleapis.com/books/v1/volumes?q=subject:$action'),
     );
     if (response.statusCode == 200) {
       final jsonData = json.decode(response.body);
@@ -49,6 +51,8 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
   String searchText = '';
   @override
   Widget build(BuildContext context) {
+    MediaQueryData queryData;
+    queryData = MediaQuery.of(context);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -69,7 +73,7 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
                       searchText = value;
                     });
                   },
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: 'Search books...',
                     border: OutlineInputBorder(),
                   ),
@@ -80,7 +84,15 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
                 elevation: 0,
                 backgroundColor: Colors.white,
                 onPressed: () {
+                    if(searchText!=''){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SearchPage(searchText: searchText),
+                        ),
+                      );
 
+                    }
                 },
                 child: Icon(Icons.search,color:Colors.black87 , ),
               ),
