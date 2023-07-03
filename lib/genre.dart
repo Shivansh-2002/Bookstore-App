@@ -22,6 +22,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
     // Implement the UI for the book detail page
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
         title: Text('        Books in ${widget.bookId}'),
       ),
       body: SingleChildScrollView(
