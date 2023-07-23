@@ -1,7 +1,9 @@
 import 'package:bookstore/searched.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import '../util.dart';
+import 'api_call_state.dart';
 import 'dart:convert';
 
 // the home page which gives us different books from different genres arranges in a column
@@ -35,7 +37,11 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
   }
   // A short code for fetching all the books of different genre
   Future<void> fetchBooks(String action) async {
-    final response = await http.get(
+    try {
+      // Set isLoading to true before starting the API call
+      Provider.of<ApiCallState>(context, listen: false).setLoading(true);
+
+      final response = await http.get(
       Uri.parse('https://www.googleapis.com/books/v1/volumes?q=subject:$action'),
     );
     if (response.statusCode == 200) {
@@ -49,6 +55,14 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
       });
     } else {
       // Handle error
+    }
+      // Set isLoading to false after the API call is completed or if there was an error
+      Provider.of<ApiCallState>(context, listen: false).setLoading(false);
+
+    }
+    catch (error) {
+      // Handle any errors that might occur during the API call
+      Provider.of<ApiCallState>(context, listen: false).setLoading(false);
     }
   }
   // searching text
