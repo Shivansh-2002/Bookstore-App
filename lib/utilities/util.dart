@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../genre.dart';
+import '../screens/genre.dart';
 
 // this the utilities files which contain different classes which are needed on different pages
 

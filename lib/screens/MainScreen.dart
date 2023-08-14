@@ -1,9 +1,9 @@
-import 'package:bookstore/searched.dart';
+import 'package:bookstore/screens/searched.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
-import '../util.dart';
-import 'api_call_state.dart';
+import '../utilities/util.dart';
+import '../utilities/api_call_state.dart';
 import 'dart:convert';
 
 // the home page which gives us different books from different genres arranges in a column
@@ -73,7 +73,7 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: const Center(child: Text('BookZone')),
+        title: const Center(child: Text('BookWander')),
       ),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,

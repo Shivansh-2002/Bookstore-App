@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../util.dart';
+import '../utilities/util.dart';
 
 // This class is used to call all the books from same genre
 class BookDetailPage extends StatefulWidget {

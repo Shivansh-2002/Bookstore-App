@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import '../util.dart';
+import '../utilities/util.dart';
 import 'dart:convert';
 
 // This page will give the searched result for the books from the api
