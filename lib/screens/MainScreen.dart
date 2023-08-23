@@ -1,4 +1,6 @@
-import 'package:bookstore/screens/searched.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import '../auth/signin.dart';
+import '../screens/searched.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
@@ -24,11 +26,14 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
   List<Book> mysteryBooks = [];
   List<Book> thrillerBooks = [];
   List<Book> crimeBooks = [];
-
+  void logoutAndNavigateToLoginScreen() {
+    FirebaseAuth.instance.signOut();
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const SignInScreen()));
+  }
   @override
   void initState() {
     super.initState();
-    //intializing all the bookslist using this code
+    //initializing all the books-list using this code
     fetchBooks("fiction");
     fetchBooks("drama");
     fetchBooks("mystery");
@@ -71,95 +76,109 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
+      appBar:AppBar(
         backgroundColor: Colors.transparent,
         title: const Center(child: Text('BookWander')),
+        automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout), // You can use any logout icon you prefer
+            onPressed: () {
+              logoutAndNavigateToLoginScreen();
+            },
+          ),
+        ],
       ),
-      body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Column(
-          children: [
-            // search bar
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+      body: WillPopScope(
+        onWillPop: () async {
+          return false;
+          },
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Column(
             children: [
-              Expanded(
-                child: TextField(
-                  onChanged: (value) {
-                    setState(() {
-                      searchText = value;
-                    });
-                  },
-                  decoration: const InputDecoration(
-                    hintText: 'Search books...',
-                    border: OutlineInputBorder(),
+              // search bar
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: TextField(
+                    onChanged: (value) {
+                      setState(() {
+                        searchText = value;
+                      });
+                    },
+                    decoration: const InputDecoration(
+                      hintText: 'Search books...',
+                      border: OutlineInputBorder(),
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(width: 8.0),
-              FloatingActionButton(
-                elevation: 0,
-                backgroundColor: Colors.white,
-                onPressed: () {
-                    if(searchText!=''){
-                      //pushing new page as per search
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => SearchPage(searchText: searchText),
-                        ),
-                      );
+                const SizedBox(width: 8.0),
+                FloatingActionButton(
+                  elevation: 0,
+                  backgroundColor: Colors.white,
+                  onPressed: () {
+                      if(searchText!=''){
+                        //pushing new page as per search
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SearchPage(searchText: searchText),
+                          ),
+                        );
 
-                    }
-                },
-                child: const Icon(Icons.search,color:Colors.black87 , ),
+                      }
+                  },
+                  child: const Icon(Icons.search,color:Colors.black87 , ),
+                ),
+              ],
+            ),
+              // scrollable column containing books from different genres
+              SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Column(
+                  children: [
+                    GenreName("Fiction", fictionBooks,context),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: fictionBooks.map((xx) => buildBookCard(xx,CardSize.small)).toList(),
+                      ),
+                    ),
+                    GenreName("Drama", dramaBooks, context),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: dramaBooks.map((xx) => buildBookCard(xx,CardSize.small)).toList(),
+                      ),
+                    ),
+                    GenreName("Mystery",mysteryBooks, context),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: mysteryBooks.map((xx) => buildBookCard(xx,CardSize.small)).toList(),
+                      ),
+                    ),
+                    GenreName("Thriller", thrillerBooks, context),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: thrillerBooks.map((xx) => buildBookCard(xx,CardSize.small)).toList(),
+                      ),
+                    ),
+                    GenreName("Crime", crimeBooks, context),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: crimeBooks.map((xx) => buildBookCard(xx,CardSize.small)).toList(),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
-            // scrollable column containing books from different genres
-            SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Column(
-                children: [
-                  GenreName("Fiction", fictionBooks,context),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: fictionBooks.map((xx) => buildBookCard(xx,CardSize.small)).toList(),
-                    ),
-                  ),
-                  GenreName("Drama", dramaBooks, context),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: dramaBooks.map((xx) => buildBookCard(xx,CardSize.small)).toList(),
-                    ),
-                  ),
-                  GenreName("Mystery",mysteryBooks, context),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: mysteryBooks.map((xx) => buildBookCard(xx,CardSize.small)).toList(),
-                    ),
-                  ),
-                  GenreName("Thriller", thrillerBooks, context),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: thrillerBooks.map((xx) => buildBookCard(xx,CardSize.small)).toList(),
-                    ),
-                  ),
-                  GenreName("Crime", crimeBooks, context),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: crimeBooks.map((xx) => buildBookCard(xx,CardSize.small)).toList(),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
         ),
       ),
     );
