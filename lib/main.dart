@@ -12,6 +12,7 @@ import 'auth/signin.dart';
 //Main Function going to run App Bookstore
 void main(){
   WidgetsFlutterBinding.ensureInitialized();
+
   Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );

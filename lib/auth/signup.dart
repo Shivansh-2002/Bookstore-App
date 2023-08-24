@@ -1,4 +1,3 @@
-import 'package:bookstore/auth/controller.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../utilities/util.dart';
@@ -64,7 +63,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ElevatedButton(
                       onPressed: ()async{
 
-                        FirebaseAuth _auth = FirebaseAuth.instance;
+                        FirebaseAuth _auth = FirebaseAuth.instance;print("this is auth");print(_auth);
                         String email = _emailTextController.text;
                         String password = _passwordTextController.text;
                         print("$email $password");

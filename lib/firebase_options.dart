@@ -54,15 +54,16 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyB7CSBQ3O5_OZ2aFo8QVu7ZBKN7kc65cpQ',
-    appId: '1:653922675269:android:48f2c846532769c7e2d12c',
+    appId: '1:653922675269:android:206540ee54cf8bd6e2d12c',
     messagingSenderId: '653922675269',
+    authDomain: 'bookzone-388c9.firebaseapp.com',
     projectId: 'bookzone-388c9',
     storageBucket: 'bookzone-388c9.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyB8K7uWmTgXF84h-5VnIwqhVi_MdUzupZQ',
-    appId: '1:653922675269:ios:cfd839d693b82781e2d12c',
+    appId: '1:653922675269:ios:5200d88e71518e33e2d12c',
     messagingSenderId: '653922675269',
     projectId: 'bookzone-388c9',
     storageBucket: 'bookzone-388c9.appspot.com',
@@ -72,7 +73,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyB8K7uWmTgXF84h-5VnIwqhVi_MdUzupZQ',
-    appId: '1:653922675269:ios:cfd839d693b82781e2d12c',
+    appId: '1:653922675269:ios:5200d88e71518e33e2d12c',
     messagingSenderId: '653922675269',
     projectId: 'bookzone-388c9',
     storageBucket: 'bookzone-388c9.appspot.com',

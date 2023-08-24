@@ -1,41 +1,34 @@
 {
   "project_info": {
-    "project_number": "653922675269",
-    "project_id": "bookzone-388c9",
-    "storage_bucket": "bookzone-388c9.appspot.com"
+    "project_number": "413340696609",
+    "project_id": "chat-app-53a14",
+    "storage_bucket": "chat-app-53a14.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:653922675269:android:48f2c846532769c7e2d12c",
+        "mobilesdk_app_id": "1:413340696609:android:7f22e0115ff0965ac46360",
         "android_client_info": {
-          "package_name": "com.example.bookstore"
+          "package_name": "com.example.chat_app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "653922675269-h3q7mksh8d459jsicfc1ojl4tavf78o8.apps.googleusercontent.com",
+          "client_id": "413340696609-nucrj9871ica0jamaqokcuumfl8c01tl.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyB7CSBQ3O5_OZ2aFo8QVu7ZBKN7kc65cpQ"
+          "current_key": "AIzaSyBXRc1MCKGL81jVkuKpUZLrfqyOLZsYKxI"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "653922675269-h3q7mksh8d459jsicfc1ojl4tavf78o8.apps.googleusercontent.com",
+              "client_id": "413340696609-nucrj9871ica0jamaqokcuumfl8c01tl.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "653922675269-vmlnkfd2espclruktmrvigeh75kd45cn.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.example.bookstore"
-              }
             }
           ]
         }
