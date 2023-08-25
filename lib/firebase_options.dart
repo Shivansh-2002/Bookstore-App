@@ -56,7 +56,6 @@ class DefaultFirebaseOptions {
     apiKey: 'AIzaSyB7CSBQ3O5_OZ2aFo8QVu7ZBKN7kc65cpQ',
     appId: '1:653922675269:android:206540ee54cf8bd6e2d12c',
     messagingSenderId: '653922675269',
-    authDomain: 'bookzone-388c9.firebaseapp.com',
     projectId: 'bookzone-388c9',
     storageBucket: 'bookzone-388c9.appspot.com',
   );
