@@ -60,7 +60,7 @@ Column signUpOption(BuildContext context, bool signin ) {
         ),
 
 
-        const SizedBox(height: 10,),
+        const SizedBox(height: 2,),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

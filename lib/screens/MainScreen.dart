@@ -99,22 +99,36 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
             children: [
               // search bar
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+
               children: [
                 Expanded(
-                  child: TextField(
-                    onChanged: (value) {
-                      setState(() {
-                        searchText = value;
-                      });
-                    },
-                    decoration: const InputDecoration(
-                      hintText: 'Search books...',
-                      border: OutlineInputBorder(),
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 0,0,0),
+                    child: TextField(
+                      onChanged: (value) {
+                        setState(() {
+                          searchText = value;
+                        });
+                      },
+                      onSubmitted: (value) {
+                        if (value.isNotEmpty) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SearchPage(searchText: value),
+                            ),
+                          );
+                        }
+                      },
+
+                      decoration: const InputDecoration(
+                        hintText: 'Search books...',
+                        border: OutlineInputBorder(),
+                      ),
                     ),
                   ),
                 ),
-                const SizedBox(width: 8.0),
+                const SizedBox(width: 2.0),
                 FloatingActionButton(
                   elevation: 0,
                   backgroundColor: Colors.white,

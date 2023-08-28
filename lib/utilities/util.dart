@@ -72,31 +72,41 @@ Widget buildBookCard(Book book, CardSize cardSize) {
     width: cardWidth,
     height: cardHeight,
     padding: const EdgeInsets.all(8),
-    child: Card(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: Image.network(
-              book.imageUrl,
-              fit: BoxFit.cover,
+    child: Padding(
+      padding: const EdgeInsets.fromLTRB(8,0,0,0),
+      child: Card(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(0,6,0,2),
+                child: Image.network(
+                  book.imageUrl,
+                  fit: BoxFit.cover,
+                ),
+              ),
             ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            book.title,
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-          ),
-          const SizedBox(height: 4),
-          Text(
-            book.author,
-            style: const TextStyle(fontSize: 14),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ],
+            const SizedBox(height: 8),
+            Center(
+              child: Text(
+                book.title,
+                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Center(
+              child: Text(
+                book.author,
+                style: const TextStyle(fontSize: 14),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ],
+        ),
       ),
     ),
   );

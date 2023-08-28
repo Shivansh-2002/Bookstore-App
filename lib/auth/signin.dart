@@ -33,7 +33,7 @@ class _SignInScreenState extends State<SignInScreen> {
           ),
           child: SingleChildScrollView(
             child: Padding(
-              padding: EdgeInsets.fromLTRB(20,MediaQuery.of(context).size.height*(0.15), 20, 20),
+              padding: EdgeInsets.fromLTRB(20,MediaQuery.of(context).size.height*(0.09), 20, 20),
               child: Column(
                 children: [
                   const Text("BookWander",
@@ -44,7 +44,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     )
                   ),
                   Image.asset(
-                    "images/logo.png",
+                    "assets/images/logo.png",
                     fit: BoxFit.contain,
                     width: 240,
                     height: 240
@@ -56,7 +56,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   reuseableTextField("Enter Password", Icons.lock_outline, true, _passwordTextController),
                 Container(
                   width: MediaQuery.of (context).size.width,
-                  height: MediaQuery.of (context).size.height*0.15,
+                  height: MediaQuery.of (context).size.height*0.18,
                   margin: const EdgeInsets. fromLTRB(0, 10, 0, 20),
                   decoration: BoxDecoration (borderRadius: BorderRadius.circular (90)),
                   child: Column(
@@ -107,21 +107,22 @@ class _SignInScreenState extends State<SignInScreen> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(0,5, 0,5),
+                        padding: const EdgeInsets.fromLTRB(0,3, 0,4),
                         child: Visibility(
                           visible: showError, // Set this to the value that controls visibility.
                           child: Text(
                             "Invalid email or password.",
-                            style: TextStyle(fontSize: 21,color: Colors.red[900]),
+                            style: TextStyle(fontSize: 18,color: Colors.red[900]),
                             textAlign: TextAlign.center,
                           ),
                         ),
                       ),
+                      signUpOption(context, true),
                     ],
                   ),
 
+
                 ),
-                  signUpOption(context, true),
                 ],
               ),
             ),
