@@ -25,11 +25,32 @@ class _BookDetailPageState extends State<BookDetailPage> {
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Column(
-          children: widget.genreBook.map((xx) => buildBookCard(xx, CardSize.large)).toList(),
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: _buildRowsOfBooks(widget.genreBook),
         ),
       ),
     );
   }
 }
+List<Widget> _buildRowsOfBooks(List<Book> books) {
+  List<Widget> rows = [];
+  for (int i = 0; i < books.length; i += 2) {
+    if (i + 1 < books.length) {
+      rows.add(Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          BookCard(book:books[i],cardSize: CardSize.large, bookLiked: false,),
+          BookCard(book:books[i + 1],cardSize: CardSize.large, bookLiked: false,),
+        ],
+      ));
+    } else {
+      rows.add(Row(
+        children: [BookCard(book:books[i],cardSize: CardSize.large, bookLiked: false,)],
+      ));
+    }
+  }
+  return rows;
+}
+
 
 

@@ -20,6 +20,7 @@ class BookstoreHomePage extends StatefulWidget {
 
 class _BookstoreHomePageState extends State<BookstoreHomePage> {
   //initializing empty list for different genres
+  bool isLoading = true;
   List<Book> books = [];
   List<Book> fictionBooks = [];
   List<Book> dramaBooks = [];
@@ -28,8 +29,10 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
   List<Book> crimeBooks = [];
   void logoutAndNavigateToLoginScreen() {
     FirebaseAuth.instance.signOut();
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const SignInScreen()));
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => const SignInScreen()));
   }
+
   @override
   void initState() {
     super.initState();
@@ -40,49 +43,90 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
     fetchBooks("thriller");
     fetchBooks("crime");
   }
+
   // A short code for fetching all the books of different genre
   Future<void> fetchBooks(String action) async {
     try {
       // Set isLoading to true before starting the API call
+      setState(() {
+        isLoading = true; // Show loading indicator
+      });
       Provider.of<ApiCallState>(context, listen: false).setLoading(true);
 
       final response = await http.get(
-      Uri.parse('https://www.googleapis.com/books/v1/volumes?q=subject:$action'),
-    );
-    if (response.statusCode == 200) {
-      final jsonData = json.decode(response.body);
-      setState(() {
-        if(action == "fiction")        fictionBooks = jsonData['items'].map<Book>((item) => Book.fromJson(item)).toList();
-        if(action == "drama")        dramaBooks = jsonData['items'].map<Book>((item) => Book.fromJson(item)).toList();
-        if(action == "mystery")        mysteryBooks = jsonData['items'].map<Book>((item) => Book.fromJson(item)).toList();
-        if(action == "thriller")        thrillerBooks = jsonData['items'].map<Book>((item) => Book.fromJson(item)).toList();
-        if(action == "crime")        crimeBooks = jsonData['items'].map<Book>((item) => Book.fromJson(item)).toList();
-      });
-    } else {
-      // Handle error
-    }
+        Uri.parse(
+          'https://www.googleapis.com/books/v1/volumes?q=subject:$action',
+        ),
+      );
+      if (response.statusCode == 200) {
+        final jsonData = json.decode(response.body);
+        print("here it is ");
+        print(jsonData);
+        setState(() {
+          if (action == "fiction")
+            fictionBooks = jsonData['items']
+                .map<Book>((item) => Book.fromJson(item))
+                .toList();
+          if (action == "drama")
+            dramaBooks = jsonData['items']
+                .map<Book>((item) => Book.fromJson(item))
+                .toList();
+          if (action == "mystery")
+            mysteryBooks = jsonData['items']
+                .map<Book>((item) => Book.fromJson(item))
+                .toList();
+          if (action == "thriller")
+            thrillerBooks = jsonData['items']
+                .map<Book>((item) => Book.fromJson(item))
+                .toList();
+          if (action == "crime")
+            crimeBooks = jsonData['items']
+                .map<Book>((item) => Book.fromJson(item))
+                .toList();
+        });
+      } else {
+        // Handle error
+      }
+      await Future.delayed(Duration(milliseconds: 300)); // Adjust the duration as needed
+
       // Set isLoading to false after the API call is completed or if there was an error
+      setState(() {
+        isLoading = false; // Hide loading indicator
+      });
       Provider.of<ApiCallState>(context, listen: false).setLoading(false);
 
-    }
-    catch (error) {
+    } catch (error) {
       // Handle any errors that might occur during the API call
       Provider.of<ApiCallState>(context, listen: false).setLoading(false);
     }
   }
+  bool isLiked = false;
   // searching text
   String searchText = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar:AppBar(
+      appBar: AppBar(
         backgroundColor: Colors.transparent,
         title: const Center(child: Text('BookWander')),
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
-            icon: const Icon(Icons.logout), // You can use any logout icon you prefer
+            icon: Icon(
+              isLiked ? Icons.favorite : Icons.favorite_border,
+              color: isLiked ? Colors.red : null,
+            ),
+            onPressed: () {
+              setState(() {
+                isLiked = !isLiked;
+                // Add your logic for liking/unliking a book here
+              });
+            },
+          ),
+          IconButton(
+            icon: const Icon(
+                Icons.logout), // You can use any logout icon you prefer
             onPressed: () {
               logoutAndNavigateToLoginScreen();
             },
@@ -92,100 +136,114 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
       body: WillPopScope(
         onWillPop: () async {
           return false;
-          },
+        },
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Column(
             children: [
               // search bar
               Row(
-
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(10, 0,0,0),
-                    child: TextField(
-                      onChanged: (value) {
-                        setState(() {
-                          searchText = value;
-                        });
-                      },
-                      onSubmitted: (value) {
-                        if (value.isNotEmpty) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => SearchPage(searchText: value),
-                            ),
-                          );
-                        }
-                      },
-
-                      decoration: const InputDecoration(
-                        hintText: 'Search books...',
-                        border: OutlineInputBorder(),
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                      child: TextField(
+                        onChanged: (value) {
+                          setState(() {
+                            searchText = value;
+                          });
+                        },
+                        onSubmitted: (value) {
+                          if (value.isNotEmpty) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    SearchPage(searchText: value),
+                              ),
+                            );
+                          }
+                        },
+                        decoration: const InputDecoration(
+                          hintText: 'Search books...',
+                          border: OutlineInputBorder(),
+                        ),
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(width: 2.0),
-                FloatingActionButton(
-                  elevation: 0,
-                  backgroundColor: Colors.white,
-                  onPressed: () {
-                      if(searchText!=''){
+                  const SizedBox(width: 2.0),
+                  FloatingActionButton(
+                    elevation: 0,
+                    backgroundColor: Colors.white,
+                    onPressed: () {
+                      if (searchText != '') {
                         //pushing new page as per search
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => SearchPage(searchText: searchText),
+                            builder: (context) =>
+                                SearchPage(searchText: searchText),
                           ),
                         );
-
                       }
-                  },
-                  child: const Icon(Icons.search,color:Colors.black87 , ),
-                ),
-              ],
-            ),
+                    },
+                    child: const Icon(
+                      Icons.search,
+                      color: Colors.black87,
+                    ),
+                  ),
+                ],
+              ),
               // scrollable column containing books from different genres
               SingleChildScrollView(
                 scrollDirection: Axis.vertical,
-                child: Column(
+                child: isLoading
+                    ? CircularProgressIndicator() :
+                Column(
                   children: [
-                    GenreName("Fiction", fictionBooks,context),
+                    GenreName("Fiction", fictionBooks, context),
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(
-                        children: fictionBooks.map((xx) => buildBookCard(xx,CardSize.small)).toList(),
+                        children: fictionBooks
+                            .map((xx) => BookCard(book: xx, cardSize: CardSize.small, bookLiked: false,))
+                            .toList(),
                       ),
                     ),
                     GenreName("Drama", dramaBooks, context),
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(
-                        children: dramaBooks.map((xx) => buildBookCard(xx,CardSize.small)).toList(),
+                        children: dramaBooks
+                            .map((xx) => BookCard(book:xx, cardSize: CardSize.small, bookLiked: false,))
+                            .toList(),
                       ),
                     ),
-                    GenreName("Mystery",mysteryBooks, context),
+                    GenreName("Mystery", mysteryBooks, context),
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(
-                        children: mysteryBooks.map((xx) => buildBookCard(xx,CardSize.small)).toList(),
+                        children: mysteryBooks
+                            .map((xx) => BookCard(book: xx,cardSize: CardSize.small, bookLiked: false,))
+                            .toList(),
                       ),
                     ),
                     GenreName("Thriller", thrillerBooks, context),
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(
-                        children: thrillerBooks.map((xx) => buildBookCard(xx,CardSize.small)).toList(),
+                        children: thrillerBooks
+                            .map((xx) => BookCard(book:xx,cardSize: CardSize.small, bookLiked: false,))
+                            .toList(),
                       ),
                     ),
                     GenreName("Crime", crimeBooks, context),
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(
-                        children: crimeBooks.map((xx) => buildBookCard(xx,CardSize.small)).toList(),
+                        children: crimeBooks
+                            .map((xx) => BookCard(book:xx, cardSize:CardSize.small, bookLiked: false,))
+                            .toList(),
                       ),
                     ),
                   ],

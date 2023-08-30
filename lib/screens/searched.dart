@@ -49,9 +49,30 @@ class _SearchPageState extends State<SearchPage> {
         scrollDirection: Axis.vertical,
         child: (searchBooks==[])?Center(child: Image.network('https://cdn.dribbble.com/userupload/2905384/file/original-93c7c3593e7d733ddd8ca2fd83ac0ed4.png?compress=1&resize=752x')):
         Column(
-          children: searchBooks.map((xx) => buildBookCard(xx, CardSize.large)).toList(),
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: _buildRowsOfBooks(searchBooks),
         ),
       ),
     );
   }
+}
+
+List<Widget> _buildRowsOfBooks(List<Book> books) {
+  List<Widget> rows = [];
+  for (int i = 0; i < books.length; i += 2) {
+    if (i + 1 < books.length) {
+      rows.add(Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          BookCard(book: books[i], cardSize: CardSize.large, bookLiked: false),
+          BookCard(book: books[i + 1], cardSize: CardSize.large, bookLiked: false),
+        ],
+      ));
+    } else {
+      rows.add(Row(
+        children: [BookCard(book:books[i],cardSize: CardSize.large, bookLiked: false,)],
+      ));
+    }
+  }
+  return rows;
 }
