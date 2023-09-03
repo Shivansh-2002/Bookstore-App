@@ -8,25 +8,22 @@ import '../utilities/util.dart';
 import '../utilities/api_call_state.dart';
 import 'dart:convert';
 
-// the home page which gives us different books from different genres arranges in a column
-// the books from each genre are horizontally scrollable
 class BookstoreHomePage extends StatefulWidget {
-  const BookstoreHomePage({super.key});
+  const BookstoreHomePage({Key? key}) : super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
   _BookstoreHomePageState createState() => _BookstoreHomePageState();
 }
 
 class _BookstoreHomePageState extends State<BookstoreHomePage> {
-  //initializing empty list for different genres
   bool isLoading = true;
-  List<Book> books = [];
   List<Book> fictionBooks = [];
   List<Book> dramaBooks = [];
   List<Book> mysteryBooks = [];
   List<Book> thrillerBooks = [];
   List<Book> crimeBooks = [];
+  String searchText = '';
+
   void logoutAndNavigateToLoginScreen() {
     FirebaseAuth.instance.signOut();
     Navigator.pushReplacement(
@@ -36,23 +33,23 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
   @override
   void initState() {
     super.initState();
-    //initializing all the books-list using this code
-    fetchBooks("fiction");
-    fetchBooks("drama");
-    fetchBooks("mystery");
-    fetchBooks("thriller");
-    fetchBooks("crime");
+    _fetchBooks();
   }
 
-  // A short code for fetching all the books of different genre
+  Future<void> _fetchBooks() async {
+    try {
+      await fetchBooks("fiction");
+      await fetchBooks("drama");
+      await fetchBooks("mystery");
+      await fetchBooks("thriller");
+      await fetchBooks("crime");
+    } catch (error) {
+      // Handle errors
+    }
+  }
+
   Future<void> fetchBooks(String action) async {
     try {
-      // Set isLoading to true before starting the API call
-      setState(() {
-        isLoading = true; // Show loading indicator
-      });
-      Provider.of<ApiCallState>(context, listen: false).setLoading(true);
-
       final response = await http.get(
         Uri.parse(
           'https://www.googleapis.com/books/v1/volumes?q=subject:$action',
@@ -60,49 +57,30 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
       );
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body);
-        print("here it is ");
-        print(jsonData);
+        final List<Book> fetchedBooks = jsonData['items']
+            .map<Book>((item) => Book.fromJson(item))
+            .toList();
+
         setState(() {
           if (action == "fiction")
-            fictionBooks = jsonData['items']
-                .map<Book>((item) => Book.fromJson(item))
-                .toList();
+            fictionBooks = fetchedBooks;
           if (action == "drama")
-            dramaBooks = jsonData['items']
-                .map<Book>((item) => Book.fromJson(item))
-                .toList();
+            dramaBooks = fetchedBooks;
           if (action == "mystery")
-            mysteryBooks = jsonData['items']
-                .map<Book>((item) => Book.fromJson(item))
-                .toList();
+            mysteryBooks = fetchedBooks;
           if (action == "thriller")
-            thrillerBooks = jsonData['items']
-                .map<Book>((item) => Book.fromJson(item))
-                .toList();
-          if (action == "crime")
-            crimeBooks = jsonData['items']
-                .map<Book>((item) => Book.fromJson(item))
-                .toList();
+            thrillerBooks = fetchedBooks;
+          if (action == "crime") crimeBooks = fetchedBooks;
         });
       } else {
         // Handle error
       }
-      await Future.delayed(Duration(milliseconds: 300)); // Adjust the duration as needed
-
-      // Set isLoading to false after the API call is completed or if there was an error
-      setState(() {
-        isLoading = false; // Hide loading indicator
-      });
-      Provider.of<ApiCallState>(context, listen: false).setLoading(false);
-
+      await Future.delayed(Duration(milliseconds: 300));
     } catch (error) {
       // Handle any errors that might occur during the API call
-      Provider.of<ApiCallState>(context, listen: false).setLoading(false);
     }
   }
-  bool isLiked = false;
-  // searching text
-  String searchText = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -113,20 +91,9 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
-            icon: Icon(
-              isLiked ? Icons.favorite : Icons.favorite_border,
-              color: isLiked ? Colors.red : null,
-            ),
-            onPressed: () {
-              setState(() {
-                isLiked = !isLiked;
-                // Add your logic for liking/unliking a book here
-              });
-            },
-          ),
-          IconButton(
             icon: const Icon(
-                Icons.logout), // You can use any logout icon you prefer
+              Icons.logout,
+            ),
             onPressed: () {
               logoutAndNavigateToLoginScreen();
             },
@@ -141,7 +108,6 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
           scrollDirection: Axis.vertical,
           child: Column(
             children: [
-              // search bar
               Row(
                 children: [
                   Expanded(
@@ -177,7 +143,6 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
                     backgroundColor: Colors.white,
                     onPressed: () {
                       if (searchText != '') {
-                        //pushing new page as per search
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -194,19 +159,17 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
                   ),
                 ],
               ),
-              // scrollable column containing books from different genres
               SingleChildScrollView(
                 scrollDirection: Axis.vertical,
-                child: isLoading
-                    ? CircularProgressIndicator() :
-                Column(
+                child: Column(
                   children: [
                     GenreName("Fiction", fictionBooks, context),
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(
                         children: fictionBooks
-                            .map((xx) => BookCard(book: xx, cardSize: CardSize.small, bookLiked: false,))
+                            .map((xx) =>
+                            BookCard(book: xx, cardSize: CardSize.small, bookLiked: false,))
                             .toList(),
                       ),
                     ),
@@ -215,7 +178,8 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
                       scrollDirection: Axis.horizontal,
                       child: Row(
                         children: dramaBooks
-                            .map((xx) => BookCard(book:xx, cardSize: CardSize.small, bookLiked: false,))
+                            .map((xx) =>
+                            BookCard(book: xx, cardSize: CardSize.small, bookLiked: false,))
                             .toList(),
                       ),
                     ),
@@ -224,7 +188,8 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
                       scrollDirection: Axis.horizontal,
                       child: Row(
                         children: mysteryBooks
-                            .map((xx) => BookCard(book: xx,cardSize: CardSize.small, bookLiked: false,))
+                            .map((xx) =>
+                            BookCard(book: xx, cardSize: CardSize.small, bookLiked: false,))
                             .toList(),
                       ),
                     ),
@@ -233,7 +198,8 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
                       scrollDirection: Axis.horizontal,
                       child: Row(
                         children: thrillerBooks
-                            .map((xx) => BookCard(book:xx,cardSize: CardSize.small, bookLiked: false,))
+                            .map((xx) =>
+                            BookCard(book: xx, cardSize: CardSize.small, bookLiked: false,))
                             .toList(),
                       ),
                     ),
@@ -242,7 +208,8 @@ class _BookstoreHomePageState extends State<BookstoreHomePage> {
                       scrollDirection: Axis.horizontal,
                       child: Row(
                         children: crimeBooks
-                            .map((xx) => BookCard(book:xx, cardSize:CardSize.small, bookLiked: false,))
+                            .map((xx) =>
+                            BookCard(book: xx, cardSize: CardSize.small, bookLiked: false,))
                             .toList(),
                       ),
                     ),

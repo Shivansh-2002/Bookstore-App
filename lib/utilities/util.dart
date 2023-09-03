@@ -143,18 +143,18 @@ class _BookCardState extends State<BookCard> {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                IconButton(
-                  icon: Icon(
-                    bookLiked ? Icons.favorite : Icons.favorite_border,
-                    color: bookLiked ? Colors.red : null,
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      bookLiked = !bookLiked;
-                      // Add your logic for liking/unliking a book here
-                    });
-                  },
-                ),
+                // IconButton(
+                //   icon: Icon(
+                //     bookLiked ? Icons.favorite : Icons.favorite_border,
+                //     color: bookLiked ? Colors.red : null,
+                //   ),
+                //   onPressed: () {
+                //     setState(() {
+                //       bookLiked = !bookLiked;
+                //       // Add your logic for liking/unliking a book here
+                //     });
+                //   },
+                // ),
               ],
             ),
           ),
